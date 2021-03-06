@@ -15,7 +15,7 @@ class WebsocketManager:
         try:
             self.active_connections.remove(websocket)
         except Exception as e:
-            print("Exception occured at line 15 in socketManager.py")
+            print("Exception occured during disconnect in socketManager.py")
             print(e)
             print_exc()
 
@@ -24,6 +24,6 @@ class WebsocketManager:
             try:
                 await socket.send_json(message)
             except Exception as e:
-                print("Exception occured at line 22 in socketManager.py")
+                print("Exception occured while broadcasting in socketManager.py")
                 print(e)
                 print_exc()
