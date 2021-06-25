@@ -47,4 +47,3 @@ class Ingredients(object):
                     "pump": row[2]
                 })
         return data
-        pass

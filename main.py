@@ -1,16 +1,22 @@
+import sys
+sys.path.append('/home/pi/.local/lib/python3.7/site-packages')
+from RPi import GPIO
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from routers import websockets, http
 import uvicorn
 
-app = FastAPI()
-app.include_router(websockets.router)
-app.include_router(http.router)
 
-app.add_middleware(CORSMiddleware, allow_origins=['*'],
-                   allow_methods=["*"], allow_headers=["*"])
+try:
+    app = FastAPI()
+    app.include_router(websockets.router)
+    app.include_router(http.router)
 
-uvicorn.run(app, port=10000, host='0.0.0.0')
+    app.add_middleware(CORSMiddleware, allow_origins=['*'],
+                       allow_methods=["*"], allow_headers=["*"])
+    uvicorn.run(app, port=10000, host='0.0.0.0')
+finally:
+    GPIO.cleanup()
 # class SocketFunctions(WebSocketServerProtocol):
 
 #     def onConnect(self, request):

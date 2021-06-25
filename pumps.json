@@ -1,0 +1,37 @@
+[
+    {
+        "num": 5,
+        "gpio": 17,
+        "model": 1
+    },
+    {
+        "num": 6,
+        "gpio": 27,
+        "model": 1
+    },
+    {
+        "num": 4,
+        "gpio": 22,
+        "model": 1
+    },
+    {
+        "num": 3,
+        "gpio": 26,
+        "model": 1
+    },
+    {
+        "num": 2,
+        "gpio": 19,
+        "model": 1
+    },
+    {
+        "num": 1,
+        "gpio": 13,
+        "model": 1
+    },
+    {
+        "num": 7,
+        "gpio": 21,
+        "model": 2
+    }
+]

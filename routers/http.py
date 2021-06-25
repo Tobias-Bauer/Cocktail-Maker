@@ -13,6 +13,8 @@ async def getCocktailCover(cocktailId: int):
     img = cocktailsDB.readImg(cocktailId)
     if(img != None):
         return(str(base64.b64encode(img), "utf-8"))
+    else:
+        return None
     # return HTMLResponse(html, media_type="image")
 
 # For JSON:

@@ -1,3 +1,5 @@
+from led_controller import LED
+from light_controller import Lights
 from fastapi import APIRouter, WebSocket, WebSocketDisconnect
 from typing import Dict
 from models.socketManager import WebsocketManager
@@ -11,6 +13,9 @@ db = Database()
 cocktailsDB = db.getCocktailDb()
 ingredientsDB = db.getIngredientsDb()
 general = General()
+
+lights = Lights()
+strip = LED()
 
 
 async def sendCocktailList(websocket):
@@ -30,6 +35,7 @@ async def websocket_endpoint(websocket: WebSocket):
     # Send Cocktail and Ingredient Lists
     await sendCocktailList(websocket)
     await websocket.send_json({"event": "ingredientList", "data": ingredientsDB.readIngredients()})
+    await websocket.send_json({"event": "toggledLED", "data": strip.getState()})
     try:
         while True:
             data = await websocket.receive_json()
@@ -65,7 +71,18 @@ async def websocket_endpoint(websocket: WebSocket):
             if(data["event"] == "unfavorite"):
                 cocktailsDB.unfavorite(data["id"])
                 await broadcastCocktailData(manager)
-
+            if(data["event"] == "getNecessaryChanges"):
+                pumpConfig = general.getRightIngredients(data["id"])
+                missingIngredients = general.getMissingIngredients(data["id"])
+                await websocket.send_json({"event": "necessaryChanges", "pumpConfig": pumpConfig, "missingIngredients": missingIngredients})
+            if(data["event"] == "toggleLight"):
+                lights.toggle(data["lightNum"])
+            if(data["event"] == "toggleLED"):
+                if data["ON"]:
+                    strip.start()
+                else:
+                    strip.clearLedStrip()
+                await manager.broadcast({"event": "toggledLED", "data": data["ON"]})
     except WebSocketDisconnect as e:
         print("Disconnecting a client...")
         print(e)

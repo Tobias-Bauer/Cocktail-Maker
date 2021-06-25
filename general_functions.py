@@ -26,6 +26,15 @@ class General():
                 cocktailInredients.remove(el["ingredient"])
         return cocktailInredients
 
+    def getRightIngredients(self, cocktailId):
+        cocktailInredients = cocktailsDB.getIngredientList(cocktailId)
+        pumpList = ingredientsDB.getMotorList()
+        newList = []
+        for el in pumpList:
+            if el["ingredient"] in cocktailInredients:
+                newList.append(el)
+        return newList
+
     def hijackCocktailData(self, data):
         for el in data:
             el["missing"] = self.getMissingIngredientNumber(el["id"])
